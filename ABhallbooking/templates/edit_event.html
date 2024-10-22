@@ -1,0 +1,219 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Event: {{ event.name }}</title>
+
+    <!-- Import Google Fonts and Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* General Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            /* Add a default image */
+            background-image: url("{% static 'image/japan.jpg' %}"); /* Fallback for static background */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: changeBackground 30s infinite;
+            transition: background-image 1s ease-in-out; 
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
+        }
+
+        @keyframes changeBackground {
+            0% {
+                background-image: url("{% static 'image/admin2.jpg' %}");
+            }
+            33% {
+                background-image: url("{% static 'image/admin.jpg' %}");
+            }
+            66% {
+                background-image: url("{% static 'image/login.jpg' %}");
+            }
+            100% {
+                background-image: url("{% static 'image/login2.jpg' %}");
+            }
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 40px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 13px 13px 20px #cbced1, -13px -13px 20px #fff;
+            margin: 40px auto;
+            color: #252525;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input[type="text"], 
+        input[type="date"], 
+        input[type="file"],
+        select, 
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: none;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            box-shadow: inset 2px 2px 5px #c1c3c5, inset -2px -2px 5px #ffffff;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #03A9F4;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s ease;
+            margin-top: 20px; /* Added margin for spacing */
+        }
+
+        button:hover {
+            background-color: #039BE5;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            text-decoration: none;
+            display: inline-block;
+            padding: 12px 20px;
+            margin-top: 20px;
+            text-align: center;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+
+        a {
+            display: inline-block;
+            text-align: center;
+            padding: 12px 20px;
+            margin-top: 10px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        /* Footer Styling */
+        .footer {
+        padding: 15px 30px;
+        text-align: center;
+        color: #ffffff;
+        box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.3);
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            }
+
+            .footer a {
+                margin: 0 10px;
+                text-decoration: none;
+                color: #ffffff;
+            }
+
+            .footer a:hover {
+                color: #039BE5;
+            }
+
+            .footer .social-icons {
+                margin-top: 10px;
+            }
+
+            .footer .social-icons a {
+                display: inline-block;
+                margin: 0 10px;
+                font-size: 24px;
+                color: #ffffff;
+                text-decoration: none;
+                transition: color 0.3s ease;
+                background: none; /* Remove any background */
+            }
+
+            .footer .social-icons a:hover {
+                color: #039BE5;
+            }
+
+            .footer .social-icons i {
+                color: #ffffff;
+                background: none; /* Ensure no background on the icons */
+                width: auto; /* Remove any fixed width */
+                height: auto; /* Remove any fixed height */
+                line-height: normal; /* Reset line height */
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            /* Remove any potential padding or border */
+            .footer .social-icons a,
+            .footer .social-icons i {
+                padding: 0;
+                border: none;
+            }
+
+    </style>
+</head>
+<body>
+
+    <h1>Edit Event: {{ event.name }}</h1>
+
+    <div class="container">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success">Save Changes</button>
+            <a href="{% url 'index' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+
+    <footer class="footer">
+        <p>Follow us on:</p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/mediakpmim"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://x.com/?lang=en"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2024 AB BookinGZ. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

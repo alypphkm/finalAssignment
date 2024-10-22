@@ -1,0 +1,269 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+
+    <!-- Importing the Font -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-image: url("{% static 'image/admin2.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: changeBackground 30s infinite;
+            transition: background-image 1s ease-in-out; 
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
+        }
+
+        @keyframes changeBackground {
+            0% { background-image: url("{% static 'image/admin2.jpg' %}"); }
+            33% { background-image: url("{% static 'image/mcmc.jpg' %}"); }
+            66% { background-image: url("{% static 'image/admin2.jpg' %}"); }
+            100% { background-image: url("{% static 'image/login2.jpg' %}"); }
+        }
+
+        .wrapper {
+            max-width: 350px;
+            min-height: 500px;
+            margin: 80px auto;
+            padding: 40px 30px 30px 30px;
+            background-color: #ecf0f3;
+            border-radius: 15px;
+            box-shadow: -20px 13px 20px #252525;
+        }
+
+        .logo {
+            width: 80px;
+            margin: auto;
+        }
+
+        .logo img {
+            width: 100%;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 50%;
+            box-shadow: 0px 0px 3px #5f5f5f,
+                0px 0px 0px 5px #ecf0f3,
+                8px 8px 15px #a7aaa7,
+                -8px -8px 15px #fff;
+        }
+
+        .wrapper .name {
+            font-weight: 600;
+            font-size: 1.4rem;
+            letter-spacing: 1.3px;
+            padding-left: 10px;
+            color: #555;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .wrapper .form-field input {
+            width: 100%;
+            display: block;
+            border: none;
+            outline: none;
+            background: none;
+            font-size: 1.2rem;
+            color: #666;
+            padding: 10px 15px 10px 10px;
+        }
+
+        .wrapper .form-field {
+            padding-left: 10px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            box-shadow: inset 8px 8px 8px #cbced1, inset -8px -8px 8px #fff;
+        }
+
+        .wrapper .form-field .fas {
+            color: #555;
+        }
+
+        .wrapper .btn {
+            width: 100%;
+            height: 40px;
+            background-color: #03A9F4;
+            color: #fff;
+            border-radius: 25px;
+            box-shadow: 3px 3px 3px #b1b1b1, -3px -3px 3px #fff;
+            letter-spacing: 1.3px;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .wrapper .btn:hover {
+            background-color: #039BE5;
+        }
+
+        .wrapper a {
+            text-decoration: none;
+            font-size: 0.8rem;
+            color: #03A9F4;
+            display: block;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .wrapper a:hover {
+            color: #039BE5;
+        }
+
+        .messages {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .messages li {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            color: #fff;
+        }
+
+        .messages .success {
+            background-color: #4CAF50;
+        }
+
+        .messages .error {
+            background-color: #F44336;
+        }
+
+        @media(max-width: 380px) {
+            .wrapper {
+                margin: 30px 20px;
+                padding: 40px 15px 15px 15px;
+            }
+        }
+        .footer {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer p {
+            margin-bottom: 10px;
+        }
+
+        .social-icons a {
+            color: #fff;
+            font-size: 24px;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            color: #03A9F4;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            z-index: 1000;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="popupMessage" class="popup"></div>
+    <div class="wrapper">
+        <div class="logo">
+            <img src="{% static 'image/logokpm.png' %}" alt="Logo">
+        </div>
+
+        <div class="name">Update Profile</div>
+        <form method="POST" action="{% url 'update_profile' %}">
+            {% csrf_token %}
+            <div class="form-field">
+                <span class="fas fa-user"></span>
+                {{ user_form.full_name }}
+            </div>
+            <div class="form-field">
+                <span class="fas fa-envelope"></span>
+                {{ user_form.email }}
+            </div>
+            <div class="form-field">
+                <span class="fas fa-phone"></span>
+                {{ user_form.phone_number }}
+            </div>
+            <button class="btn" type="submit" name="update_profile">Update Profile</button>
+        </form>
+        <form method="POST" action="{% url 'update_profile' %}">
+            {% csrf_token %}
+            <div class="form-field">
+                <span class="fas fa-lock"></span>
+                {{ password_form.old_password }}
+            </div>
+            <div class="form-field">
+                <span class="fas fa-lock"></span>
+                {{ password_form.new_password1 }}
+            </div>
+            <div class="form-field">
+                <span class="fas fa-lock"></span>
+                {{ password_form.new_password2 }}
+            </div>
+            <button class="btn" type="submit" name="change_password">Change Password</button>
+        </form>
+
+        <a href="{% url 'index' %}">Back to Home</a>
+    </div>
+    <footer class="footer">
+        <p>Follow us on:</p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/mediakpmim"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://x.com/?lang=en"><i class="fab fa-twitter"></i></a>
+            <a href="https://www.instagram.com"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2024 AB BookinGZ. All rights reserved.</p>
+    </footer>
+    <script>
+        function showPopup(message) {
+            const popup = document.getElementById('popupMessage');
+            popup.textContent = message;
+            popup.style.display = 'block';
+            setTimeout(() => {
+                popup.style.opacity = '0';
+                setTimeout(() => {
+                    popup.style.display = 'none';
+                    popup.style.opacity = '1';
+                }, 300);
+            }, 3000);
+        }
+
+        // Check if there's a message in the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const message = urlParams.get('message');
+        if (message) {
+            showPopup(decodeURIComponent(message));
+        }
+    </script>
+</body>
+</html>

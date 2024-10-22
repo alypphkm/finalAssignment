@@ -1,0 +1,377 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <!-- Import Google Fonts and Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-image: url("{% static 'image/admin2.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: changeBackground 30s infinite;
+            transition: background-image 1s ease-in-out; 
+            color: #333;
+            line-height: 1.6;
+        }
+
+        @keyframes changeBackground {
+            0% { background-image: url("{% static 'image/admin2.jpg' %}"); }
+            33% { background-image: url("{% static 'image/nature.jpeg' %}"); }
+            66% { background-image: url("{% static 'image/admin.jpg' %}"); }
+            100% { background-image: url("{% static 'image/login2.jpg' %}"); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            color: #03A9F4;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .about-section {
+            text-align: center;
+            margin-bottom: 40px;
+            position: relative;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+        }
+
+        .about-section::before {
+            content: '"';
+            font-size: 5em;
+            color: #03A9F4;
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            opacity: 0.2;
+        }
+
+        .about-section p {
+            font-size: 1.1em;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section {
+            margin-bottom: 50px;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .section h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #03A9F4;
+            border-bottom: 2px solid #03A9F4;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .section p {
+            font-size: 1em;
+            color: #666;
+            line-height: 1.8;
+        }
+
+        .team-section {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .team-member {
+            flex: 1 1 calc(33.333% - 30px);
+            max-width: 300px;
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+            overflow: hidden;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .team-member img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 15px;
+            border: 5px solid #03A9F4;
+            transition: transform 0.3s ease;
+        }
+
+        .team-member:hover img {
+            transform: scale(1.1);
+        }
+
+        .team-member h3 {
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            color: #03A9F4;
+        }
+
+        .team-member p {
+            color: #777;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .team-member {
+                flex: 1 1 100%;
+            }
+        }
+
+        /* Footer Styling */
+        .footer {
+        padding: 15px 30px;
+        text-align: center;
+        color: #ffffff;
+        box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.3);
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    }
+
+    .footer a {
+        margin: 0 10px;
+        text-decoration: none;
+        color: #ffffff;
+    }
+
+    .footer a:hover {
+        color: #039BE5;
+    }
+
+    .footer .social-icons {
+        margin-top: 10px;
+    }
+
+    .footer .social-icons a {
+        display: inline-block;
+        margin: 0 10px;
+        font-size: 24px;
+        color: #ffffff;
+        text-decoration: none;
+        transition: color 0.3s ease;
+        background: none; /* Remove any background */
+    }
+
+    .footer .social-icons a:hover {
+        color: #039BE5;
+    }
+
+    .footer .social-icons i {
+        color: #ffffff;
+        background: none; /* Ensure no background on the icons */
+        width: auto; /* Remove any fixed width */
+        height: auto; /* Remove any fixed height */
+        line-height: normal; /* Reset line height */
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    /* Remove any potential padding or border */
+    .footer .social-icons a,
+    .footer .social-icons i {
+        padding: 0;
+        border: none;
+    }
+        .profile-dropdown {
+        position: relative;
+        display: inline-block;
+        }
+
+        .profile-icon {
+            font-size: 30px;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+
+        /* Dropdown Content Styling */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 200px;
+            padding: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            z-index: 1;
+            text-align: left;
+        }
+
+        .dropdown-content p {
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .dropdown-content a {
+            display: block;
+            margin-top: 10px;
+            color: #03A9F4;
+            text-decoration: none;
+        }
+
+        .dropdown-content a:hover {
+            color: #039BE5;
+        }
+
+        /* Show dropdown on hover */
+        .profile-dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .header {
+            /* Dark header */
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffffff;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header nav a {
+            margin: 0 15px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .header nav a:hover {
+            text-decoration: underline;
+            color: #03a9f4; /* Bright color on hover */
+        }
+
+        .header img {
+            max-height: 50px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="{% static 'image/logokpm.png' %}" alt="Logo">
+        <nav>
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'booked_tickets' %}">Booked Ticket</a>
+            <a href="{% url 'about_us' %}"">About</a>
+            {% if user.is_staff or user.is_superuser %}
+                <a href="{% url 'database' %}">Database</a>
+            {% endif %}
+        </nav>
+    
+        <!-- Profile Icon and Dropdown -->
+        {% if user.is_authenticated %}
+        <div class="profile-dropdown">
+            <i class="fas fa-user-circle profile-icon"></i>
+            <div class="dropdown-content">
+                <p><strong>ID:</strong> {{ user.student_id }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <a href="{% url 'logout' %}">Logout</a>
+            </div>
+        </div>
+        {% endif %}
+    </header>
+
+    <!-- About Section -->
+    <div class="container">
+        <h1>About AB BookinGZ</h1>
+
+        <div class="about-section">
+            <p>Welcome to AB BookinGZ! We are dedicated to revolutionizing the event booking experience, making it easier and more efficient for everyone. Whether it's a concert, conference, or private event, we ensure the best venue booking experience possible.</p>
+        </div>
+
+        <div class="section">
+            <h2>Our Mission</h2>
+            <p>Our mission is to streamline the event booking process, providing an intuitive and hassle-free platform for users to find, book, and manage their venue reservations with ease. We aim to connect event organizers with the perfect venues, ensuring memorable experiences for all attendees.</p>
+        </div>
+
+        <div class="section">
+            <h2>Our Vision</h2>
+            <p>We envision a future where every event planner and venue operator collaborates seamlessly through our platform, transforming the event management industry into one that is highly efficient, transparent, and inclusive. Our goal is to become the go-to solution for all event booking needs, fostering a community of satisfied users and partners.</p>
+        </div>
+
+        <div class="section">
+            <h2>Our Journey</h2>
+            <p>Founded in 2024, AB BookinGZ was born out of a need to simplify the complicated and time-consuming venue booking process. What started as a small project quickly grew into a comprehensive platform serving hundreds of users across various industries. Our journey is marked by continuous innovation, user-centric design, and a commitment to excellence in event management solutions.</p>
+        </div>
+
+        <div class="section">
+            <h2>Meet Our Team</h2>
+            <div class="team-section">
+                <div class="team-member">
+                    <img src="{% static 'image/miles.jpg' %}" alt="John Doe">
+                    <h3>Alep Kondoriano</h3>
+                    <p>Founder & CEO</p>
+                </div>
+                <div class="team-member">
+                    <img src="{% static 'image/darwish2.jpg' %}" alt="Jane Smith">
+                    <h3>Darwish Yoichi</h3>
+                    <p>Chief Operations Officer</p>
+                </div>
+                <div class="team-member">
+                    <img src="{% static 'image/khaled.jpg' %}" alt="Emily Johnson">
+                    <h3>Khaled Umaira</h3>
+                    <p>Lead Developer</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Follow us on:</p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/@mediakpmim" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2024 AB BookinGZ. All rights reserved.</p>
+    </footer>
+</body>
+</html>

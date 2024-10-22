@@ -1,0 +1,500 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-image: url("{% static 'image/admin2.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .header {
+            /* Dark header */
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #ffffff;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header nav a {
+            margin: 0 15px;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .header nav a:hover {
+            text-decoration: underline;
+            color: #03a9f4; /* Bright color on hover */
+        }
+
+        .header img {
+            max-height: 50px;
+        }
+        .profile-dropdown {
+        position: relative;
+        display: inline-block;
+        }
+
+        .profile-icon {
+            font-size: 30px;
+            cursor: pointer;
+            margin-left: 15px;
+        }
+
+        /* Dropdown Content Styling */
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: white;
+            min-width: 200px;
+            padding: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            z-index: 1;
+            text-align: left;
+        }
+
+        .dropdown-content p {
+            margin: 5px 0;
+            color: #333;
+        }
+
+        .dropdown-content a {
+            display: block;
+            margin-top: 10px;
+            color: #03A9F4;
+            text-decoration: none;
+        }
+
+        .dropdown-content a:hover {
+            color: #039BE5;
+        }
+
+        /* Show dropdown on hover */
+        .profile-dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+
+        .container {
+            flex-grow: 1;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #000000;
+        }
+
+        .table-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-container h2 {
+            color: #03A9F4;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            color: #202020;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #03A9F4;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .btn-delete {
+            background-color: #F44336;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-delete:hover {
+            background-color: #D32F2F;
+        }
+
+        .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000; /* Increase this value */
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+            text-align: center;
+            border-radius: 10px;
+            color: #202020;
+            position: relative; /* Add this */
+            z-index: 1001; /* Add this, should be higher than .modal */
+        }
+
+        .btn-confirm, .btn-cancel {
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-confirm {
+            background-color: #F44336;
+            color: white;
+        }
+
+        .btn-cancel {
+            background-color: #9E9E9E;
+            color: white;
+        }
+
+        .footer {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 15px 30px;
+            text-align: center;
+        }
+
+        .footer a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        .footer .social-icons {
+            margin-top: 10px;
+        }
+
+        .footer .social-icons a {
+            font-size: 18px;
+        }
+        .btn-toggle-admin {
+        background-color: #4CAF50; /* Green background */
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.1s;
+        font-size: 14px;
+        text-transform: uppercase;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .btn-toggle-admin:hover {
+        background-color: #45a049; /* Darker green on hover */
+        transform: translateY(-2px);
+    }
+
+    .btn-toggle-admin:active {
+        transform: translateY(0);
+    }
+
+    .btn-toggle-admin.remove {
+        background-color: #f44336; /* Red background for remove button */
+    }
+
+    .btn-toggle-admin.remove:hover {
+        background-color: #d32f2f; /* Darker red on hover */
+    }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <img src="{% static 'image/logokpm.png' %}" alt="Logo">
+        <nav>
+            <a href="{% url 'index' %}">Home</a>
+            <a href="{% url 'booked_tickets' %}">Booked Ticket</a>
+            <a href="{% url 'about_us' %}"">About</a>
+            <a href="{% url 'database' %}">Database</a>
+        </nav>
+    
+        <!-- Profile Icon and Dropdown -->
+        {% if user.is_authenticated %}
+        <div class="profile-dropdown">
+            <i class="fas fa-user-circle profile-icon"></i>
+            <div class="dropdown-content">
+                <p><strong>ID:</strong> {{ user.student_id }}</p>
+                <p><strong>Email:</strong> {{ user.email }}</p>
+                <a href="{% url 'logout' %}">Logout</a>
+                <a href="{% url 'update_profile' %}">Edit Profile</a>
+            </div>
+        </div>
+        {% endif %}
+    </header>
+
+    <div class="container">
+        <h1>Database Management</h1>
+        <div class="table-container">
+            <h2>Users</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Email</th>
+                    <th>Full Name</th>
+                    <th>Student ID</th>
+                    <th>Superuser</th>
+                    <th>Admin Status</th>
+                    <th>Action</th>
+                </tr>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.full_name }}</td>
+                    <td>{{ user.student_id }}</td>
+                    <td>{% if user.is_superuser %}Yes{% else %}No{% endif %}</td>
+                    <td>
+                        <button onclick="confirmAdminToggle({{ user.id }}, '{{ user.email }}', {{ user.is_staff|yesno:'true,false' }})" class="btn-toggle-admin {% if user.is_staff %}remove{% endif %}">
+                            {% if user.is_staff %}Remove Admin{% else %}Make Admin{% endif %}
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn-delete" onclick="openModal('user', {{ user.id }})">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div class="table-container">
+            <h2>Events</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Action</th>
+                </tr>
+                {% for event in events %}
+                <tr>
+                    <td>{{ event.id }}</td>
+                    <td>{{ event.name }}</td>
+                    <td>{{ event.date }}</td>
+                    <td>{{ event.start_time }} - {{ event.end_time }}</td>
+                    <td>
+                        <button class="btn-delete" onclick="openModal('event', {{ event.id }})">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="table-container">
+            <h2>Payments</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Event</th>
+                    <th>Method</th>
+                    <th>Confirmed</th>
+                    <th>Action</th>
+                </tr>
+                {% for payment in payments %}
+                <tr>
+                    <td>{{ payment.id }}</td>
+                    <td>{{ payment.user.email }}</td>
+                    <td>{{ payment.event.name }}</td>
+                    <td>{{ payment.payment_method }}</td>
+                    <td>{{ payment.is_confirmed }}</td>
+                    <td>
+                        <button class="btn-delete" onclick="openModal('payment', {{ payment.id }})">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="table-container">
+            <h2>Booked Tickets</h2>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>User</th>
+                    <th>Event</th>
+                    <th>Seat Count</th>
+                    <th>Total Price</th>
+                    <th>Action</th>
+                </tr>
+                {% for ticket in booked_tickets %}
+                <tr>
+                    <td>{{ ticket.id }}</td>
+                    <td>{{ ticket.user.email }}</td>
+                    <td>{{ ticket.event.name }}</td>
+                    <td>{{ ticket.seat_count }}</td>
+                    <td>{{ ticket.total_price }}</td>
+                    <td>
+                        <button class="btn-delete" onclick="openModal('ticket', {{ ticket.id }})">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+
+    <div id="confirmation-modal" class="modal">
+        <div class="modal-content">
+            <p>Are you sure you want to delete this item?</p>
+            <button id="confirm-delete" class="btn-confirm">Yes</button>
+            <button id="cancel-delete" class="btn-cancel">Cancel</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Follow us on:</p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/@mediakpmim" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2024 AB BookinGZ. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let currentDeleteUrl = '';
+
+        function openModal(type, id) {
+            currentDeleteUrl = `{% url 'delete_database_item' %}?type=${type}&id=${id}`;
+            document.getElementById('confirmation-modal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('confirmation-modal').style.display = 'none';
+        }
+
+        document.getElementById('confirm-delete').addEventListener('click', () => {
+            if (currentDeleteUrl) {
+                window.location.href = currentDeleteUrl;
+            }
+            closeModal();
+        });
+
+        document.getElementById('cancel-delete').addEventListener('click', closeModal);
+
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('confirmation-modal')) {
+                closeModal();
+            }
+        }
+
+        function confirmAdminToggle(userId, userEmail, isStaff) {
+        const action = isStaff ? 'remove admin privileges from' : 'grant admin privileges to';
+        document.getElementById('admin-confirmation-message').textContent = `Are you sure you want to ${action} ${userEmail}?`;
+        
+        currentAdminToggleForm = document.createElement('form');
+        currentAdminToggleForm.method = 'post';
+        currentAdminToggleForm.action = "{% url 'toggle_admin_status' %}";
+        
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrfmiddlewaretoken';
+        csrfInput.value = '{{ csrf_token }}';
+        currentAdminToggleForm.appendChild(csrfInput);
+        
+        const userIdInput = document.createElement('input');
+        userIdInput.type = 'hidden';
+        userIdInput.name = 'user_id';
+        userIdInput.value = userId;
+        currentAdminToggleForm.appendChild(userIdInput);
+        
+        document.getElementById('admin-confirmation-modal').style.display = 'block';
+    }
+
+    function closeAdminModal() {
+        document.getElementById('admin-confirmation-modal').style.display = 'none';
+        currentAdminToggleForm = null;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('confirm-admin-toggle').addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event from bubbling up
+            if (currentAdminToggleForm) {
+                document.body.appendChild(currentAdminToggleForm);
+                currentAdminToggleForm.submit();
+            }
+            closeAdminModal();
+        });
+
+        document.getElementById('cancel-admin-toggle').addEventListener('click', function(e) {
+            e.stopPropagation(); // Prevent event from bubbling up
+            closeAdminModal();
+        });
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('confirmation-modal')) {
+                closeModal();
+            }
+            if (event.target == document.getElementById('admin-confirmation-modal')) {
+                closeAdminModal();
+            }
+        }
+    });
+    </script>
+    <div id="admin-confirmation-modal" class="modal">
+        <div class="modal-content">
+            <p id="admin-confirmation-message"></p>
+            <button id="confirm-admin-toggle" class="btn-confirm">Yes</button>
+            <button id="cancel-admin-toggle" class="btn-cancel">Cancel</button>
+        </div>
+    </div>
+</body>
+</html>

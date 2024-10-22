@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+
+    <!-- Import Google Fonts and Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* Base Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            /* Add a default image */
+            background-image: url("{% static 'image/admin2.jpg' %}"); /* Fallback for static background */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: changeBackground 30s infinite;
+            transition: background-image 1s ease-in-out; 
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
+        }
+
+        @keyframes changeBackground {
+            0% {
+                background-image: url("{% static 'image/admin2.jpg' %}");
+            }
+            33% {
+                background-image: url("{% static 'image/nature.jpeg' %}");
+            }
+            66% {
+                background-image: url("{% static 'image/admin.jpg' %}");
+            }
+            100% {
+                background-image: url("{% static 'image/login2.jpg' %}");
+            }
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 5px 5px 10px #cbced1, -5px -5px 10px #fff;
+            margin: 40px auto;
+            color:#000000;
+        }
+
+        h2, h3 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        select, input[type="file"] {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 8px;
+            box-shadow: inset 8px 8px 8px #cbced1, inset -8px -8px 8px #fff;
+            font-size: 16px;
+            color:#000000
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #03A9F4;
+            color: #ffffff;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 3px 3px 3px #b1b1b1, -3px -3px 3px #fff;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #039BE5;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto;
+            max-width: 200px;
+            border-radius: 10px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        ul li {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        /* Footer Styling */
+        .footer {
+            padding: 15px 30px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 -10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            color: #039BE5;
+        }
+
+        .footer .social-icons {
+            margin-top: 10px;
+        }
+
+        .footer .social-icons a {
+            margin: 0 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Payment for {{ event.name }}</h2>
+        <p>Total Amount: RM{{ booking_details.total_price }}</p>
+        <p>Seats: {{ booking_details.seat_count }}</p>
+    
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <h2>Select Payment Method</h2>
+        
+            <select id="payment-method" name="payment_method" required>
+                <option value="">-- Select Payment Method --</option>
+                <option value="QR">QR Payment</option>
+                <option value="BANK">Bank Transfer</option>
+            </select>
+        
+            <div id="qr-section" style="display: none; margin-top: 15px;">
+                <h3>Scan this QR Code for Payment</h3>
+                <img src="{% static 'image/qrcode.jpg' %}" alt="QR Code">
+            </div>
+        
+            <div id="bank-section" style="display: none; margin-top: 15px;">
+                <h3>Bank Transfer Details</h3>
+                <ul>
+                    <li>Maybank: 3432357742</li>
+                    <li>CIMB: 87654321</li>
+                    <li>Bank Islam: 11223344</li>
+                </ul>
+            </div>
+        
+            <label style="margin-top: 15px;">Upload Payment Proof:</label>
+            <input type="file" name="proof_of_payment" required>
+        
+            <button type="submit">Proceed</button>
+        </form>
+    </div>
+    <footer class="footer">
+        <p>Follow us on:</p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/@mediakpmim" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2024 AB BookinGZ. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // JavaScript to show/hide payment sections based on selected option
+        const paymentMethod = document.getElementById('payment-method');
+        const qrSection = document.getElementById('qr-section');
+        const bankSection = document.getElementById('bank-section');
+
+        paymentMethod.addEventListener('change', function () {
+            if (this.value === 'QR') {
+                qrSection.style.display = 'block';
+                bankSection.style.display = 'none';
+            } else if (this.value === 'BANK') {
+                bankSection.style.display = 'block';
+                qrSection.style.display = 'none';
+            } else {
+                qrSection.style.display = 'none';
+                bankSection.style.display = 'none';
+            }
+        });
+    </script>
+
+</body>
+</html>

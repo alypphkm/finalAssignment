@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Event</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <style>
+        /* Base Styling */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            /* Add a default image */
+            background-image: url("{% static 'image/admin2.jpg' %}"); /* Fallback for static background */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            animation: changeBackground 30s infinite;
+            transition: background-image 1s ease-in-out; 
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 100vh;
+        }
+        @keyframes changeBackground {
+            0% {
+                background-image: url("{% static 'image/admin2.jpg' %}");
+            }
+            33% {
+                background-image: url("{% static 'image/nature.jpeg' %}");
+            }
+            66% {
+                background-image: url("{% static 'image/login.jpg' %}");
+            }
+            100% {
+                background-image: url("{% static 'image/login2.jpg' %}");
+            }
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 40px auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 5px 5px 10px #cbced1, -5px -5px 10px #fff;
+            color: #272727;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            outline: none;
+            border-radius: 10px;
+            box-shadow: inset 8px 8px 8px #cbced1, inset -8px -8px 8px #fff;
+            margin-bottom: 20px;
+            color: #272727;
+        }
+
+        button {
+            padding: 15px 25px;
+            background-color: #03A9F4;
+            color: white;
+            border: none;
+            width: 200px;
+            border-radius: 20px;
+            cursor: pointer;
+            box-shadow: 3px 3px 15px #b1b1b1, -3px -3px 15px #fff;
+            transition: background-color 0.3s;
+            
+        }
+
+        button:hover {
+            background-color: #039BE5;
+            transform: scale(1.05); /* Slight scaling on hover */
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #03A9F4;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #039BE5;
+        }
+
+        /* Footer Styling */
+        .footer {
+            padding: 5px ;
+            text-align: center;
+            color: #ffffff;
+            box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.3);
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .footer .social-icons {
+            display: flex; /* Flexbox layout */
+            justify-content: center; /* Center items horizontally */
+            gap: 20px; /* Space between icons */
+            margin: 0px;
+        }
+
+        .footer .social-icons a {
+            font-size: 24px;
+            color: #ffffff; /* White icons */
+            text-decoration: none;
+            transition: color 0.3s;
+            margin: 0
+        }
+
+        .footer .social-icons a:hover {
+            color: #039BE5; /* Hover effect */
+        }
+        .footer p{
+            color:#fff
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Book Event: {{ event.name }}</h1>
+        <p><strong>Date:</strong> {{ event.date }}</p>
+        <p><strong>Time:</strong> {{ event.start_time }} - {{ event.end_time }}</p>
+        <p><strong>Price per Seat:</strong> RM {{ event.price_per_seat }}</p>
+        <p><strong>Available Seats:</strong> {{ available_seats }}</p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <label>Student ID:</label>
+            <input type="text" name="student_id" value="{{ user.student_id }}" readonly>
+
+            <label>Number of Seats:</label>
+            <input type="number" name="seat_count" min="1" max="{{ available_seats }}" required>
+
+            <button type="submit">Book</button>
+        </form>
+
+        <a href="{% url 'index' %}">Back to Homepage</a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Follow us on:</p>
+        <div class="social-icons">
+            <a href="https://www.facebook.com/@mediakpmim" target="_blank"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://twitter.com" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2024 AB BookinGZ. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
